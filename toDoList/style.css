@@ -37,7 +37,7 @@ input {
     border-radius: 5px;
 }
 
-button {
+.submitButton {
     padding: 10px;
     background-color: #5cb85c;
     color: white;
@@ -46,11 +46,24 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.submitButton:hover {
     background-color: #4cae4c;
 }
 
-/* 
+li .deleteButton{ 
+    background-color:salmon;
+    color: white;
+    border: none;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+li .deleteButton:hover {
+    background-color: rgb(255, 113, 98);
+}
+
 ul {
   list-style: none;
   padding: 0;
@@ -58,13 +71,9 @@ ul {
 }
 
 li {
+  font-family: Arial;
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid wheat;
+  border-bottom: 1px solid rgb(199, 199, 199);
 }
-
-li .delete {
-  color: salmon;
-  cursor: pointer;
-} */
