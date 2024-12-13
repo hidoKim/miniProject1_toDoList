@@ -5,14 +5,15 @@ document.addEventListener("DOMContentLoaded", () => { //DOM이 로드되면 실�
     
     // 추가기능
     listform.addEventListener("submit", (e) => { //submit 버튼을 누르면 실행
-        e.preventDefault(); //페이지 새로고침 방지
+        e.preventDefault(); //페이지 새로고침 방지(디폴트 행동 취소)
 
-        const todoText = textInput.value.trim(); // 할 일을 가져오고 공백제거
+        const todoText = textInput.value.trim(); // 할 일을 가져오고 공백제거: trim()
         if(todoText === "") return; // 텍스트 창이 비어있으면 실행 X
 
         const li = document.createElement("li"); // 새로운 <li>요소 생성
 
         li.innerHTML = `
+            <button class="checkButton"></button> <!--체크버튼 추가-->
             <span>${todoText}</span>
             <button class="deleteButton">x</button>
         `; //<li>에 HTML 내용 추가
@@ -27,5 +28,12 @@ document.addEventListener("DOMContentLoaded", () => { //DOM이 로드되면 실�
         if (e.target.classList.contains("deleteButton")){ // 삭제버튼을 클릭했다면
             e.target.parentElement.remove(); // 삭제 버튼의 부모인 <li> 요소를 삭제
         }
+        // 체크버튼: 체크추가, 가로줄추가
+        if (e.target.classList.contains("checkButton")){
+            const span = e.target.nextElementSibling;
+            e.target.classList.toggle("checked");
+            span.classList.toggle("completed");
+        }
+        
     });
 });
