@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", () => { // DOM이 로드되면 실
     const listform = document.getElementById("listform"); //할일 리스트의 <from> 요소를 저장하는 변수 
     const todoList = document.getElementById("todoList"); //추가한 할일 목록 요소 <ul>이 저장되는 변수
     const textInput = document.getElementById("textInput"); //텍스트 입력하는 요소 <input>이 저장되는 변수
-    
+    const clearAllButton = document.getElementById("clearAllButton"); //전체 삭제 버튼
+
     // LocalStorage에서 할 일 목록을 불러와 화면에 표시
     let todos = JSON.parse(localStorage.getItem("todos")) || [];
     renderTodos();
@@ -16,11 +17,11 @@ document.addEventListener("DOMContentLoaded", () => { // DOM이 로드되면 실
 
         // 새로운 할 일 객체를 생성하고 배열에 추가
         const newTodo = { text: todoText, completed: false };
-        todos.push(newTodo);
+        todos.unshift(newTodo); // 새 할 일을 배열의 맨 앞에 추가
         saveTodos();
 
         // 화면에 할 일 항목 추가
-        addTodoToList(newTodo);
+        addTodoToList(newTodo, true); // 새 할 일을 리스트의 맨 위에 추가
         textInput.value = ""; // 입력 필드 초기화
     });
 
@@ -43,26 +44,48 @@ document.addEventListener("DOMContentLoaded", () => { // DOM이 로드되면 실
             todos[index].completed = !todos[index].completed; // 완료 상태 토글
             saveTodos(); // 변경사항 저장
 
-            e.target.classList.toggle("checked");
-            span.classList.toggle("completed");
+            e.target.classList.toggle("checked"); //체크
+            span.classList.toggle("completed"); //체크해제
+
+            // 체크된 할 일을 목록의 가장 아래로 이동
+            if (todos[index].completed){ 
+                todoList.appendChild(li);
+            }
+            else {
+                todoList.prepend(li);
+            }
         }
+    });
+    
+    // 전체삭제 기능
+    clearAllButton.addEventListener("click", ()=>{
+        todos = []; // 할일 목록 초기화
+        saveTodos(); // localStorage 초기화
+        todoList.innerHTML = ""; // 화면 초기화
     });
 
     // 할 일 목록을 화면에 표시하는 함수
     function renderTodos() {
         todoList.innerHTML = ""; // 기존 목록 초기화
-        todos.forEach(addTodoToList); // 각 할 일 항목을 화면에 추가
+        todos.forEach((todo) => addTodoToList(todo)); // 각 할 일 항목을 화면에 추가
     }
 
     // 할 일 항목을 <ul>에 추가하는 함수
-    function addTodoToList(todo) {
+    function addTodoToList(todo, prepend = false) {
         const li = document.createElement("li");
         li.innerHTML = `
             <button class="checkButton ${todo.completed ? "checked" : ""}"></button>
             <span class="${todo.completed ? "completed" : ""}">${todo.text}</span>
             <button class="deleteButton">x</button>
         `;
-        todoList.appendChild(li);
+
+        // 새로운 할 일을 할일 목록 맨 위에 추가
+        if (prepend) {
+            todoList.prepend(li);
+        }
+        else {
+            todoList.appendChild(li);
+        }
     }
 
     // LocalStorage에 할 일 목록을 저장하는 함수

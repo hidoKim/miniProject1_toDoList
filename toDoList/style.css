@@ -102,6 +102,19 @@ li {
     bottom: 1px;
 }
 
+#clearAllButton {
+    padding: 10px;
+    background-color: salmon;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#clearAllButton:hover {
+    background-color: rgb(255, 113, 98);
+}
+
 .completed {
     text-decoration: line-through;
     color: #6d6d6d;
